@@ -41,7 +41,7 @@ public class SimpleCalculator extends JFrame implements ActionListener {
 	private JButton[] btns = new JButton[20];
 	
 	JLabel calcText = new JLabel("0");
-	JLabel holdText = new JLabel("1");
+	JLabel holdText = new JLabel(" ");
 	
 	private int opt = 0;
 	
@@ -104,21 +104,83 @@ public class SimpleCalculator extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-    	// If the btn is clicked resets "error" and "userTextField"
-    	// and calls createFibonacci function
-    	
-    	
-    	/*
-    	 * if (e.getSource() == btn || e.getSource() == userTextField) {
-        	error.setText("");
-        	fbnTextField.setVisible(false);
-        	createFibonacci();
-        	userTextField.setText(""); // Resets the text field
-        }
-    	 */
+    	char[] btnClick = e.getActionCommand().toCharArray();     	
+    	doActions(btnClick[0]);
     	
     }
 	
+	private void doActions(char btnClick) {
+		
+		switch(btnClick) {
+    	
+		case '0':
+			if(calcText.getText() != "0")
+				calcText.setText(calcText.getText() + "0");
+			break;
+		case '1':
+			if(calcText.getText() == "0")
+				calcText.setText("1");
+			else
+				calcText.setText(calcText.getText() + "1");
+			break;
+		case '2':
+			if(calcText.getText() == "0")
+				calcText.setText("2");
+			else
+				calcText.setText(calcText.getText() + "2");
+			break;
+		case '3':
+			if(calcText.getText() == "0")
+				calcText.setText("3");
+			else
+				calcText.setText(calcText.getText() + "3");
+			break;
+		case '4':
+			if(calcText.getText() == "0")
+				calcText.setText("4");
+			else
+				calcText.setText(calcText.getText() + "4");
+			break;
+		case '5':
+			if(calcText.getText() == "0")
+				calcText.setText("5");
+			else
+				calcText.setText(calcText.getText() + "5");
+			break;
+		case '6':
+			if(calcText.getText() == "0")
+				calcText.setText("6");
+			else
+				calcText.setText(calcText.getText() + "6");
+			break;
+		case '7':
+			if(calcText.getText() == "0")
+				calcText.setText("7");
+			else
+				calcText.setText(calcText.getText() + "7");
+			break;
+		case '8':
+			if(calcText.getText() == "0")
+				calcText.setText("8");
+			else
+				calcText.setText(calcText.getText() + "8");
+			break;
+		case '9':
+			if(calcText.getText() == "0")
+				calcText.setText("9");
+			else
+				calcText.setText(calcText.getText() + "9");
+			break;
+		case '.':
+			if(!calcText.getText().contains("."))
+				calcText.setText(calcText.getText() + ".");
+			break;    	
+			
+	}
+		
+		
+	}
+
 	public static void main(String[] args) {
 		new SimpleCalculator();
 
