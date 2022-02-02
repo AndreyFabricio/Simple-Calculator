@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 /**
  * @author Andrey Fabricio
@@ -12,15 +13,43 @@ import java.awt.event.ActionListener;
  * subtraction, multiplication and division of positive and negative values
  * The calculator also does percentages, square roots and squares
  * 
- * Last update: 30/01/2022
+ * Last update: 02/02/2022
  */
 
 public class SimpleCalculator extends JFrame implements ActionListener {
 
-	Container container=getContentPane();
-	JLabel calcText = new JLabel("-1.7976931348623157E308 X 1.7976931348623157E308");
-	JLabel holdText = new JLabel("1.7976931348623157E308 X 1.7976931348623157E308");
+	private DecimalFormat df = new DecimalFormat("#.0000");
 	
+	private String[] cSymb = {
+			"CE", "C", "DEL"
+	};
+	
+	private String[] symb = {
+			"√", "x²", "%", "X",
+			"7", "8", "9", "÷",
+			"4", "5", "6", "+",
+			"1", "2", "3", "-",
+			"±", "0", ".", "="
+	};
+	
+	// Container container = getContentPane();
+	
+	private JPanel panel = new JPanel(new BorderLayout(2, 2));
+	private JPanel pan1 = new JPanel(new BorderLayout(2, 2));
+	private JPanel pan2 = new JPanel(new BorderLayout(2, 2));
+	private JPanel cPan = new JPanel(new GridLayout(1, 3, 1, 1));
+	private JPanel btnPan = new JPanel(new GridLayout(5, 4, 1, 1));
+	private JButton[] cBtns = new JButton[3];
+	private JButton[] btns = new JButton[20];
+	
+	JLabel calcText = new JLabel("0");
+	JLabel holdText = new JLabel("1");
+	
+	private int opt = 0;
+	
+	private double firstN = 0, secN = 0;
+	
+	/*
 	JButton ce = new JButton("CE");
 	JButton c = new JButton("C");
 	JButton del = new JButton("DEL");
@@ -45,21 +74,64 @@ public class SimpleCalculator extends JFrame implements ActionListener {
 	JButton one = new JButton("1");
 	JButton two = new JButton("2");
 	JButton three = new JButton("3");
-	JButton zero = new JButton("0");			
+	JButton zero = new JButton("0");	
+	*/		
 	
-	SimpleCalculator()
+	public SimpleCalculator()
 	{
-		setLayoutManager();
-		setLocationAndSize();
-		addComponentsToContainer();
+		// setLayoutManager();
+		
+		//setLocationAndSize();
+		
+		// addComponentsToContainer();
+		
+		addComponentsToPanels();
 		addActionEvent();
 		addKeyEvent();
 	}
 	
+	private void addComponentsToPanels() {
+		
+		for(int i = 0; i < cSymb.length; i++) {
+			
+			cBtns[i] = new JButton(cSymb[i]);
+			
+			cBtns[i].setFocusPainted(false);
+			cBtns[i].addActionListener(this);
+			cPan.add(cBtns[i]);
+		}
+		for(int i = 0; i < symb.length; i++) {
+			
+			btns[i] = new JButton(symb[i]);
+			
+			btns[i].setFocusPainted(false);
+			btns[i].addActionListener(this);
+			btnPan.add(btns[i]);
+		}
+
+		pan1.add(holdText, BorderLayout.NORTH);
+		pan1.add(calcText, BorderLayout.CENTER);
+		pan2.add(cPan, BorderLayout.NORTH);
+		pan2.add(btnPan, BorderLayout.CENTER);
+		
+		panel.add(pan1, BorderLayout.NORTH);
+		panel.add(pan2, BorderLayout.CENTER);
+		add(panel, BorderLayout.CENTER);
+		
+		// SimpleCalculator frame=new SimpleCalculator(); // Creates a new frame
+        setTitle("Simple Calculator"); // Sets the title
+        setSize(357,417); // Defines the bounds of the frame
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Programs closes when exits
+        setResizable(false); // And the program its not resizable
+        setVisible(true); // Makes the frame visible 
+		
+	}
+
 	public void setLayoutManager()
 	{		
-		// Container creation
-		container.setLayout(null);
+		// Pan lay out its components
+		pan1.setLayout(null);
+		pan2.setLayout(null);
 	}
 	
 	public void setLocationAndSize()
@@ -76,6 +148,8 @@ public class SimpleCalculator extends JFrame implements ActionListener {
 		holdText.setFont(new Font("Serif",Font.PLAIN,20)); // Sets the font size, location, etc
 		holdText.setHorizontalAlignment(SwingConstants.RIGHT); // Sets the text to be on the right
 		holdText.setVerticalAlignment(SwingConstants.BOTTOM); // Sets the text to be on the bottom		
+		
+		/*
 		
 		// Text formaters (deletes char, clear whole text, etc)
 		ce.setBounds(7,80,112,50);
@@ -152,10 +226,14 @@ public class SimpleCalculator extends JFrame implements ActionListener {
 		zero.setFont(new Font("Arial", Font.PLAIN, 32));
 		zero.setFocusPainted(false);
 		
+		*/
+		
 	}
 	
-	public void addComponentsToContainer()
-	{
+	// public void addComponentsToContainer()
+//	{
+		
+		/*
 		
 		// Puts the objects in the container
 		
@@ -187,8 +265,10 @@ public class SimpleCalculator extends JFrame implements ActionListener {
 		container.add(eight);
 		container.add(nine);
 		container.add(zero);
+		
+		*/
 	    
-	}
+//	}
 	
 	public void addActionEvent()
 	{
@@ -223,12 +303,7 @@ public class SimpleCalculator extends JFrame implements ActionListener {
     }
 	
 	public static void main(String[] args) {
-		SimpleCalculator frame=new SimpleCalculator(); // Creates a new frame
-        frame.setTitle("Simple Calculator"); // Sets the title
-        frame.setBounds(10,10,357,417); // Defines the bounds of the frame
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Programs closes when exits
-        frame.setResizable(false); // And the program its not resizable
-        frame.setVisible(true); // Makes the frame visible 
+		new SimpleCalculator();
 
 	}
 
