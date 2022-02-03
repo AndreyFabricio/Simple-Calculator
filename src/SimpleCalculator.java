@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 
 /**
@@ -13,7 +14,7 @@ import java.text.DecimalFormat;
  * subtraction, multiplication and division of positive and negative values
  * The calculator also does percentages, square roots and squares
  * 
- * Last update: 02/02/2022
+ * Last update: 03/02/2022
  */
 
 public class SimpleCalculator extends JFrame implements ActionListener {
@@ -79,6 +80,8 @@ public class SimpleCalculator extends JFrame implements ActionListener {
 			btnPan.add(btns[i]);
 		}
 
+		keyboardMap();
+		
 		pan1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 		
 		calcText.setFont(new Font("Serif",Font.BOLD,30)); // Sets the font size, location, etc
@@ -102,6 +105,71 @@ public class SimpleCalculator extends JFrame implements ActionListener {
         setVisible(true); // Makes the frame visible 
 		
 	}
+	
+	private void keyboardMap() {
+		
+		// C, CE, DEL
+		clickOnKey( cBtns[0], "actionPerformed", KeyEvent.VK_SPACE );	
+		clickOnKey( cBtns[1], "actionPerformed", KeyEvent.VK_DELETE );	
+		clickOnKey( cBtns[2], "actionPerformed", KeyEvent.VK_BACK_SPACE );	
+		
+		// Operations (keyboard)
+		clickOnKey( btns[3], "actionPerformed", KeyEvent.VK_ASTERISK );		
+		clickOnKey( btns[7], "actionPerformed", KeyEvent.VK_SLASH );
+		clickOnKey( btns[11], "actionPerformed", KeyEvent.VK_PLUS );		
+		clickOnKey( btns[15], "actionPerformed", KeyEvent.VK_MINUS );
+		clickOnKey( btns[18], "actionPerformed", KeyEvent.VK_PERIOD );
+		clickOnKey( btns[19], "actionPerformed", KeyEvent.VK_EQUALS );
+		
+		// Operations (numpad)
+		clickOnKey( btns[3], "actionPerformed", KeyEvent.VK_MULTIPLY );		
+		clickOnKey( btns[7], "actionPerformed", KeyEvent.VK_DIVIDE );
+		clickOnKey( btns[11], "actionPerformed", KeyEvent.VK_ADD );		
+		clickOnKey( btns[15], "actionPerformed", KeyEvent.VK_SUBTRACT );
+		clickOnKey( btns[18], "actionPerformed", KeyEvent.VK_DECIMAL );
+		clickOnKey( btns[19], "actionPerformed", KeyEvent.VK_ENTER );		
+
+		// Numbers (keyboard)
+		clickOnKey( btns[17], "actionPerformed", KeyEvent.VK_0 );
+		clickOnKey( btns[12], "actionPerformed", KeyEvent.VK_1 );
+		clickOnKey( btns[13], "actionPerformed", KeyEvent.VK_2 );
+		clickOnKey( btns[14], "actionPerformed", KeyEvent.VK_3 );
+		clickOnKey( btns[8], "actionPerformed", KeyEvent.VK_4 );
+		clickOnKey( btns[9], "actionPerformed", KeyEvent.VK_5);
+		clickOnKey( btns[10], "actionPerformed", KeyEvent.VK_6 );
+		clickOnKey( btns[4], "actionPerformed", KeyEvent.VK_7 );
+		clickOnKey( btns[5], "actionPerformed", KeyEvent.VK_8 );
+		clickOnKey( btns[6], "actionPerformed", KeyEvent.VK_9 );
+		
+		// Numbers (numpad)
+		clickOnKey( btns[17], "actionPerformed", KeyEvent.VK_NUMPAD0 );
+		clickOnKey( btns[12], "actionPerformed", KeyEvent.VK_NUMPAD1 );
+		clickOnKey( btns[13], "actionPerformed", KeyEvent.VK_NUMPAD2 );
+		clickOnKey( btns[14], "actionPerformed", KeyEvent.VK_NUMPAD3 );
+		clickOnKey( btns[8], "actionPerformed", KeyEvent.VK_NUMPAD4 );
+		clickOnKey( btns[9], "actionPerformed", KeyEvent.VK_NUMPAD5);
+		clickOnKey( btns[10], "actionPerformed", KeyEvent.VK_NUMPAD6 );
+		clickOnKey( btns[4], "actionPerformed", KeyEvent.VK_NUMPAD7 );
+		clickOnKey( btns[5], "actionPerformed", KeyEvent.VK_NUMPAD8 );
+		clickOnKey( btns[6], "actionPerformed", KeyEvent.VK_NUMPAD9 );
+		
+	}
+
+	public static void clickOnKey(
+		    final AbstractButton button, String actionName, int key )
+		{
+		    button.getInputMap( JButton.WHEN_IN_FOCUSED_WINDOW )
+		        .put( KeyStroke.getKeyStroke( key, 0 ), actionName );
+
+		    button.getActionMap().put( actionName, new AbstractAction()
+		    {
+		        @Override
+		        public void actionPerformed( ActionEvent e )
+		        {
+		            button.doClick();
+		        }
+		    } );
+		}
 	
     @Override
     public void actionPerformed(ActionEvent e) 
