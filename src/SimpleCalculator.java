@@ -45,7 +45,9 @@ public class SimpleCalculator extends JFrame implements ActionListener {
 	
 	private int opt = 0;
 	
-	private double firstN = 0, secN = 0;
+	private double firstN = 0, secN = 0, holdN = 0;
+	
+	private boolean repeat = false;
 	
 	public SimpleCalculator()
 	{
@@ -104,81 +106,263 @@ public class SimpleCalculator extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) 
     {
-    	char[] btnClick = e.getActionCommand().toCharArray();     	
-    	doActions(btnClick[0]);
+    	String btnClick = e.getActionCommand();     	
+    	doActions(btnClick);
     	
     }
 	
-	private void doActions(char btnClick) {
+	private void doActions(String btnClick) {
 		
 		switch(btnClick) {
     	
-		case '0':
+		// Numbers
+		case "0":
 			if(calcText.getText() != "0")
 				calcText.setText(calcText.getText() + "0");
+			repeat = false;
 			break;
-		case '1':
+		case "1":
 			if(calcText.getText() == "0")
 				calcText.setText("1");
 			else
 				calcText.setText(calcText.getText() + "1");
+			repeat = false;
 			break;
-		case '2':
+		case "2":
 			if(calcText.getText() == "0")
 				calcText.setText("2");
 			else
 				calcText.setText(calcText.getText() + "2");
+			repeat = false;
 			break;
-		case '3':
+		case "3":
 			if(calcText.getText() == "0")
 				calcText.setText("3");
 			else
 				calcText.setText(calcText.getText() + "3");
+			repeat = false;
 			break;
-		case '4':
+		case "4":
 			if(calcText.getText() == "0")
 				calcText.setText("4");
 			else
 				calcText.setText(calcText.getText() + "4");
+			repeat = false;
 			break;
-		case '5':
+		case "5":
 			if(calcText.getText() == "0")
 				calcText.setText("5");
 			else
 				calcText.setText(calcText.getText() + "5");
+			repeat = false;
 			break;
-		case '6':
+		case "6":
 			if(calcText.getText() == "0")
 				calcText.setText("6");
 			else
 				calcText.setText(calcText.getText() + "6");
+			repeat = false;
 			break;
-		case '7':
+		case "7":
 			if(calcText.getText() == "0")
 				calcText.setText("7");
 			else
 				calcText.setText(calcText.getText() + "7");
+			repeat = false;
 			break;
-		case '8':
+		case "8":
 			if(calcText.getText() == "0")
 				calcText.setText("8");
 			else
 				calcText.setText(calcText.getText() + "8");
+			repeat = false;
 			break;
-		case '9':
+		case "9":
 			if(calcText.getText() == "0")
 				calcText.setText("9");
 			else
 				calcText.setText(calcText.getText() + "9");
+			repeat = false;
 			break;
-		case '.':
+		
+		// Operations
+		case "X":
+			opt = 1;
+			firstN = Double.parseDouble(calcText.getText());
+			holdText.setText(numberFormating(firstN) + " X ");
+			calcText.setText("0");
+			repeat = false;
+			break;
+		case "÷":
+			opt = 2;
+			firstN = Double.parseDouble(calcText.getText());
+			holdText.setText(numberFormating(firstN) + "/");
+			calcText.setText("0");
+			repeat = false;
+			break;
+		case "+":
+			opt = 3;
+			firstN = Double.parseDouble(calcText.getText());
+			holdText.setText(numberFormating(firstN) + " + ");
+			calcText.setText("0");
+			repeat = false;
+			break;
+		case "-":
+			opt = 4;
+			firstN = Double.parseDouble(calcText.getText());
+			holdText.setText(numberFormating(firstN) + " - ");
+			calcText.setText("0");
+			repeat = false;
+			break;
+		case "√":
+			firstN = Double.parseDouble(calcText.getText());
+			holdText.setText("√(" + numberFormating(firstN) + ")");
+			calcText.setText(""+ numberFormating(Math.sqrt(firstN)));
+			break;
+		case "x²":
+			firstN = Double.parseDouble(calcText.getText());
+			holdText.setText("(" + numberFormating(firstN) + ")²");
+			calcText.setText(""+ numberFormating(Math.pow(firstN, 2)));
+			break;
+		case "%":
+			if (holdText.getText() != " ") {
+				secN = Double.parseDouble(calcText.getText());
+				runPercentage();
+				repeat = true;
+			}
+			break;
+		case "=":
+			if (holdText.getText() != " ") {
+				if (!repeat)
+					secN = Double.parseDouble(calcText.getText());
+				runopt();
+				repeat = true;
+			}
+			break;
+			
+		// Formating
+		case "C":
+			calcText.setText("0");
+			holdText.setText(" ");
+			break; 
+		case "CE":
+			calcText.setText("0");
+			break; 
+		case "DEL":
+			if(calcText.getText().length() - 1 > 0)
+				calcText.setText(calcText.getText().substring(0, calcText.getText().length() - 1));
+			else
+				calcText.setText("0");
+			break; 
+		case "±":
+			firstN = Double.parseDouble(calcText.getText()) * (-1);
+			if (firstN != -0)
+				calcText.setText(numberFormating(firstN));
+			break;
+		case ".":
 			if(!calcText.getText().contains("."))
 				calcText.setText(calcText.getText() + ".");
-			break;    	
+			break;    
+		default:
+			break;
 			
+		}
+		
+		
 	}
+
+	private void runPercentage() {
 		
+		if(repeat) {
+			secN = holdN;
+			firstN = Double.parseDouble(calcText.getText());
+		}
+		else {
+			holdN = secN;
+		}
 		
+		secN = secN * firstN;
+		secN = secN / 100;
+		runopt();		
+
+		String getSymbol = "";
+		double tempNum = 0;
+		
+		switch(opt) {
+		case 1:
+			getSymbol = " X ";
+			tempNum = Double.parseDouble(calcText.getText()) / 100;
+			calcText.setText(numberFormating(tempNum));
+			break;
+		case 2:
+			getSymbol = "/";
+			tempNum = Double.parseDouble(calcText.getText()) * 100;
+			calcText.setText(numberFormating(tempNum));
+			break;
+		case 3:
+			getSymbol = " + ";
+			break;
+		case 4:
+			getSymbol = " - ";
+			break;
+		default:
+			break;
+		}
+		
+		holdText.setText(numberFormating(firstN) + getSymbol + numberFormating(holdN) + "%");
+		
+	}
+
+	private void runopt() {
+		
+		if(repeat) {
+			secN = holdN;
+			firstN = Double.parseDouble(calcText.getText());
+		}
+		else {
+			holdN = secN;
+		}
+		
+		switch(opt) {
+		case 1:
+			calcText.setText(numberFormating(firstN * secN));
+			holdText.setText(numberFormating(firstN) + " X " + numberFormating(secN));
+			break;
+		case 2:
+			if(secN != 0) {
+				calcText.setText(numberFormating(firstN / secN));
+				holdText.setText(numberFormating(firstN) + " / " + numberFormating(secN));
+			}
+			else {
+				holdText.setText("Division by 0 is not possible");
+			}
+			break;
+		case 3:
+			calcText.setText(numberFormating(firstN + secN));
+			holdText.setText(numberFormating(firstN) + " + " + numberFormating(secN));
+			break;
+		case 4:
+			calcText.setText(numberFormating(firstN - secN));
+			holdText.setText(numberFormating(firstN) + " - " + numberFormating(secN));
+			break;
+		default:
+			break;
+		}
+		
+	}
+
+	private String numberFormating(double num) {
+		
+		String tempNum[] = {
+				"" + num
+		};
+		
+		tempNum = tempNum[0].split("\\.");
+		
+		if(tempNum[1].matches("[0]+"))
+			return tempNum[0];
+		else
+			return tempNum[0] + "." + tempNum[1];
 	}
 
 	public static void main(String[] args) {
